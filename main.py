@@ -42,8 +42,6 @@ def collaps_unary(equation):
 		elif char == '-':
 			minus_cnt += 1
 
-	print(output)
-
 	res = []
 	num = ""
 	for char in output:
@@ -59,8 +57,11 @@ def collaps_unary(equation):
 
 	return res
 
+def convert_floats(equation):
+	for char in equation:
+		if char is isinstance(char, float):
+			char = float(char)
+	return equation
 
-
-
-print(collaps_unary("+--33.3*-2-+2*--3.55/-2"))
+print(convert_floats(collaps_unary("+--33.3*-2-+2*--3.55/-2")))
 
