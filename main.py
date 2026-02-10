@@ -5,8 +5,9 @@ def my_eval(equation):
 	equation = rem_whitespace(equation)
 	equation = collaps_unary(equation)
 	equation = convert_floats(equation)
+	if find_errors(equation):
+		quit("Incorrect expression.")
 	equation = club_operators(equation)
-
 	equation = mult_div_collapse(equation)
 	equation = add_collapse(equation)
 	equation = sub_collapse(equation)
@@ -42,8 +43,17 @@ def collaps_unary(equation):
 			output.append(char)
 			continue
 
-		elif char in non_unary_symbols:
+		elif char in ['*', '/']:
+			if plus_cnt or minus_cnt:
+				if minus_cnt % 2 == 1:
+					output.append('-')
+				else:
+					output.append('+')
+				plus_cnt = minus_cnt = 0
 			output.append(char)
+
+		elif char == '.':
+   			output.append(char)
 
 		elif char == '+':
 			plus_cnt += 1
@@ -137,17 +147,18 @@ def sub_collapse(equation):
 			return sub_collapse(equation)
 		index += 1
 
-# not correct
-# def find_errors(equation):
-# 	operators = ["*", "-", "/", "*"]
+def find_errors(equation):
+	print(equation)
+	operators = ["*", "-", "/", "+"]
 
-# 	if equation[0] in ['*', '/'] or equation[-1] in operators:
-# 		return True
+	if equation[0] in ['*', '/'] or equation[-1] in operators:
+		return True
 
-# 	for i in range(len(equation) - 1):
-# 		if equation[i] in operators and operators[i + 1] in operators:
-# 			return True
-# 	return False
+	for i in range(len(equation) - 1):
+	    if equation[i] in ['+', '-', '*', '/']:
+	        if equation[i + 1] in ['*', '/']:
+	            return True
+	return False
 
 print(my_eval(equation))
 print(eval(equation))
